@@ -4,63 +4,49 @@
  */
 package RuntimeException;
 
-//La excepción CannotRedoException se utilizaría para indicar que una operación de "rehacer" no puede llevarse a cabo en un contexto 
-//específico de una aplicación. Esta excepción se lanza cuando, por alguna razón, no es posible realizar una acción de "rehacer" en 
-// estado dado del programa.
-class CannotRedoException extends RuntimeException {
+class CannotUndoException extends Exception {
     // Constructor con un mensaje personalizado
-    public CannotRedoException(String message) {
+    public CannotUndoException(String message) {
         super(message);
     }
 }
 
-class TextEditor {
+class Document {
     private String content;
-    private boolean canRedo;
+    private boolean changesMade;
 
-    public TextEditor() {
+    public Document() {
         this.content = "";
-        this.canRedo = false;
+        this.changesMade = false;
     }
 
     public void addText(String text) {
         this.content += text;
-        this.canRedo = true;
+        this.changesMade = true;
     }
 
-    public void undo() {
-        // Simulamos la operación de "deshacer"
-        // En una implementación real, aquí revertiríamos el cambio en el contenido
-        System.out.println("Operación de deshacer realizada.");
-        this.canRedo = true;
-    }
-
-    public void redo() {
-        if (!canRedo) {
-            throw new CannotRedoException("No se puede rehacer la operación.");
+    public void undo() throws CannotUndoException {
+        if (!changesMade) {
+            throw new CannotUndoException("No se pueden deshacer cambios porque no se ha realizado ninguno");
         }
-        // Lógica para realizar la operación de "rehacer"
-        System.out.println("Operación de rehacer realizada.");
-        this.canRedo = false;
+        // Lógica para deshacer los cambios (en este caso, simplemente borramos el contenido)
+        this.content = "";
+        this.changesMade = false;
+    }
+
+    public String getContent() {
+        return this.content;
     }
 }
 
 class Main {
     public static void main(String[] args) {
-        TextEditor editor = new TextEditor();
+        Document document = new Document();
 
-        // Simulamos la adición de texto
-        editor.addText("Hola ");
-        editor.addText("Mundo");
-
-        // Realizamos una operación de "deshacer"
-        editor.undo();
-
-        // Intentamos rehacer sin haber realizado ninguna operación de "deshacer"
         try {
-            editor.redo();
-        } catch (CannotRedoException e) {
-            System.out.println("Error: " + e.getMessage());
+            document.undo();
+        } catch (CannotUndoException e) {
+            System.out.println("Error al intentar deshacer: " + e.getMessage());
         }
     }
 }

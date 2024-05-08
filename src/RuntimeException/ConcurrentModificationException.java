@@ -4,10 +4,27 @@
  */
 package RuntimeException;
 
-/**
- *
- * @author Lab05pc15
- */
-public class ConcurrentModificationException {
-    
+import java.util.ArrayList;
+import java.util.List;
+
+class ConcurrentModificationExceptionDemo {
+    public static void main(String[] args) {
+        List<Integer> numbers = new ArrayList<>();
+
+        // Agregamos algunos números a la lista
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+
+        // Iteramos sobre la lista y tratamos de modificarla durante la iteración
+        try {
+            for (Integer number : numbers) {
+                System.out.println(number);
+                // Intentamos agregar un elemento a la lista durante la iteración
+                numbers.add(4); // Esto lanzará ConcurrentModificationException
+            }
+        } catch (java.util.ConcurrentModificationException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }

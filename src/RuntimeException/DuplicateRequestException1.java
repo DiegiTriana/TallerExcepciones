@@ -4,12 +4,12 @@
  */
 package RuntimeException;
 
-public class EventException {
+public class DuplicateRequestException1 {
     public static void main(String[] args) {
         try {
-            // Simulamos un escenario donde se lanza la excepción EventException
-            throw new EventException("Error: Se ha producido un error en el evento.");
-        } catch (EventException e) {
+            // Simulamos un escenario donde se lanza la excepción DuplicateRequestException
+            throw new DuplicateRequestException("Error: La solicitud está duplicada");
+        } catch (DuplicateRequestException e) {
             // Manejamos la excepción
             System.out.println("Error: " + e.getMessage());
         }
